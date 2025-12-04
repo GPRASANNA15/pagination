@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<head>
+    <title>Pagination</title>
+<style>
+    #buttoncontainer{
+        display: flex;
+        gap:10px;
+        align-items: center;
+        justify-content: center;
+    }
+    table{
+        box-shadow: 0 2px 4px;
+        border-collapse: collapse;
+        width:100%;
+    }
+    table,th,td{
+border:1px solid black;
+padding:10px;
+
+    }
+    #btdisplay{
+        position:fixed;
+        bottom:0px;
+        left:40%;
+    }
+    button{
+        font-size:20px;
+    }
+    .active{
+        background-color: lightblue;
+    }
+</style>    
+</head>
+<body>
+    <h1>The details of the customer are given in table</h1>
+    <h1>Click the buttons to see the results</h1>
+    <div id="tab"></div>
+    <br><br>
+    <div id="btdisplay"></div>
+  </body>
+
+
+<script src="https://app.zenclass.in/sheets/v1/js/zen/suite/bundle.js"></script>
+<script>
+    let index=0;
+    let table=document.createElement("table");
+    let t=document.getElementById("tab");
+    let div=document.createElement("div");
+    div.className="buttoncontainer";
+    let btdisp=document.getElementById("btdisplay");
+    let first=document.createElement("button");
+    first.textContent="Previous";
+    first.addEventListener("click",()=>{
+        let activbtn=document.querySelector(".active");
+        let prev=activbtn.previousElementSibling;
+        handleClick(prev.innerHTML,prev);
+        });
+    let next=document.createElement("button");
+    next.textContent="next";
+    next.addEventListener("click",()=>{
+        let activbtn=document.querySelector(".active");
+        let nex=activbtn.nextElementSibling;
+        handleClick(nex.innerHTML,nex);
+    });
+    let bt1=document.createElement("button");
+    bt1.textContent="1";
+
+    window.onload=()=>{
+       handleClick(1,bt1);
+    }
+    
+    let bt2=document.createElement("button");
+    bt2.textContent="2";
+     bt2.addEventListener("click",()=>{handleClick(2,bt2);index=1;})
+    let bt3=document.createElement("button");
+    bt3.textContent="3";
+     bt3.addEventListener("click",()=>{handleClick(3,bt3); index=2;})
+    let bt4=document.createElement("button");
+    bt4.textContent="4";
+     bt4.addEventListener("click",()=>{handleClick(4,bt4); index=3;})
+    let bt5=document.createElement("button");
+    bt5.textContent="5";
+     bt5.addEventListener("click",()=>{handleClick(5,bt5); index=4;})
+    let bt6=document.createElement("button");
+    bt6.textContent="6";
+     bt6.addEventListener("click",()=>{handleClick(6,bt6);index=5;})
+    let bt7=document.createElement("button");
+    bt7.textContent="7";
+     bt7.addEventListener("click",()=>{handleClick(7,bt7); index=6;})
+    let bt8=document.createElement("button");
+    bt8.textContent="8";
+     bt8.addEventListener("click",()=>{handleClick(8,bt8);index=7;})
+    let bt9=document.createElement("button");
+    bt9.textContent="9";
+     bt9.addEventListener("click",()=>{handleClick(9,bt9);index=8;})
+    let bt10=document.createElement("button");
+    bt10.textContent="10";
+     bt10.addEventListener("click",()=>{handleClick(10,bt10);index=9;})
+     div.appendChild(first);
+     div.appendChild(next);
+     div.appendChild(bt1);
+     div.appendChild(bt2);
+     div.appendChild(bt3);
+     div.appendChild(bt4);
+     div.appendChild(bt5);
+     div.appendChild(bt6);
+     div.appendChild(bt7);
+     div.appendChild(bt8);
+     div.appendChild(bt9);
+     div.appendChild(bt10);
+     btdisp.appendChild(div);
+
+
+    function handleClick(e,b)
+    {
+        b1=btdisp.querySelectorAll("button");
+        b1.forEach(element => {
+            element.classList.remove("active");
+        });
+        b.classList.add("active");
+fetch("https://raw.githubusercontent.com/Rajavasanthan/jsondata/master/pagenation.json")
+    .then(response=>{ return response.json()})
+    .then(data=>{
+        arr=data;
+        let value=e;
+   Display(e);
+    })
+    .catch(error=>{
+        alert(error)
+    });
+    }
+    let arr=[];
+  function Display(e){
+    table.innerHTML="";
+    let start=(e-1)*10;
+    let end=start+10; 
+
+    let th1=document.createElement("th");
+    let th2=document.createElement("th");
+    let th3=document.createElement("th");
+    let tr1=document.createElement("tr");
+    th1.textContent="ID";
+    th2.textContent="NAME";
+    th3.textContent="EMAIL";
+    tr1.appendChild(th1);
+    tr1.appendChild(th2);
+    tr1.appendChild(th3);
+    table.appendChild(tr1);
+ for(i=start;i<end;i++)
+ {
+    
+    let tr=document.createElement("tr");
+    let id=document.createElement("td");
+    let name=document.createElement("td");
+    let email=document.createElement("td");
+    id.textContent=arr[i].id;
+    name.textContent=arr[i].name;
+    email.textContent=arr[i].email;
+    tr.appendChild(id);
+    tr.appendChild(name);
+    tr.appendChild(email);
+    console.log(tr);
+    table.appendChild(tr);
+    t.appendChild(table);
+
+ }
+    
+  }
+</script>
